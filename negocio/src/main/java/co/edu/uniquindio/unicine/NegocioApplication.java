@@ -1,5 +1,6 @@
 package co.edu.uniquindio.unicine;
 
+import co.edu.uniquindio.unicine.entidades.Cliente;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
