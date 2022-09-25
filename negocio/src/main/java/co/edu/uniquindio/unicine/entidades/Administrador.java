@@ -6,8 +6,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class Cliente implements Serializable {
-
+public class Administrador implements Serializable {
     @Id
     private String cedula;
     private String nombre;
@@ -16,9 +15,9 @@ public class Cliente implements Serializable {
     private String numeroTelefonico;
 
     private String contraseña;
-    public Cliente() {}
+    public Administrador() {}
 
-    public Cliente(String cedula, String nombre, String email, String numeroTelefonico, String contraseña) {
+    public Administrador(String cedula, String nombre, String email, String numeroTelefonico, String contraseña) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.email = email;
@@ -43,35 +42,35 @@ public class Cliente implements Serializable {
     }
 
     public String getCedula () {
-            return cedula;
-        }
+        return cedula;
+    }
 
-        public void setCedula (String cedula){
-            this.cedula = cedula;
-        }
+    public void setCedula (String cedula){
+        this.cedula = cedula;
+    }
 
-        public String getNombre () {
-            return nombre;
-        }
+    public String getNombre () {
+        return nombre;
+    }
 
-        public void setNombre (String nombre){
-            this.nombre = nombre;
-        }
+    public void setNombre (String nombre){
+        this.nombre = nombre;
+    }
 
-        public String getEmail () {
-            return email;
-        }
+    public String getEmail () {
+        return email;
+    }
 
-        public void setEmail (String email){
-            this.email = email;
-        }
+    public void setEmail (String email){
+        this.email = email;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cliente cliente = (Cliente) o;
-        return Objects.equals(cedula, cliente.cedula) && Objects.equals(nombre, cliente.nombre) && Objects.equals(email, cliente.email) && Objects.equals(numeroTelefonico, cliente.numeroTelefonico) && Objects.equals(contraseña, cliente.contraseña);
+        if (!(o instanceof Administrador)) return false;
+        Administrador that = (Administrador) o;
+        return Objects.equals(cedula, that.cedula) && Objects.equals(nombre, that.nombre) && Objects.equals(email, that.email) && Objects.equals(numeroTelefonico, that.numeroTelefonico) && Objects.equals(contraseña, that.contraseña);
     }
 
     @Override
