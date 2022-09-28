@@ -1,4 +1,4 @@
-package co.edu.uniquindio.unicine.entidades;
+package co.edu.uniquindio.unicine.test.entidades;
 
 import lombok.*;
 
@@ -6,8 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -31,11 +29,11 @@ public class Cliente implements Serializable {
     private String email;
 
     @ElementCollection
-    private Map<String,String> telefonos;
+    private List<String> telefonos;
 
     private String contraseña;
 
-    @OneToMany(mappedBy = "cliente")
-    private List<Compra> compras;
+    //@OneToMany(mappedBy = "cliente")
+    //private List<Compra> compras;
 
 }

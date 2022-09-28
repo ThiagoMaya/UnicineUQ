@@ -1,4 +1,4 @@
-package co.edu.uniquindio.unicine.entidades;
+package co.edu.uniquindio.unicine.test.entidades;
 
 import lombok.*;
 
@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -17,20 +16,18 @@ import java.util.Objects;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Cupon implements Serializable {
+public class Teatro implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Integer idCupon;
+    private Integer idTeatro;
 
-    private String descripicon;
+    private String nombre;
 
-    private Date fechaVencimiento;
+    private String ciudad ;
 
-    private float valor;
-
-    private String criterio;
+    private String direccion;
 
 
 }

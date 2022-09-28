@@ -1,13 +1,13 @@
-package co.edu.uniquindio.unicine.entidades;
+package co.edu.uniquindio.unicine.test.entidades;
 
 import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
-
 @Entity
 @Getter
 @Setter
@@ -15,18 +15,16 @@ import java.util.Objects;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Administrador implements Serializable {
+public class Sala implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private String cedula;
+    private Integer idSala;
 
-    private String nombre;
+    private String tipo;
 
-    private String email;
+    private String estado;
 
-    private String numeroTelefonico;
-
-    private String contraseña;
 
 }

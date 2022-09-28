@@ -1,8 +1,9 @@
-package co.edu.uniquindio.unicine.entidades;
+package co.edu.uniquindio.unicine.test.entidades;
 
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,19 +15,18 @@ import java.util.Objects;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Pelicula implements Serializable {
+public class Administrador implements Serializable {
 
     @Id
     @EqualsAndHashCode.Include
+    private String cedula;
+
     private String nombre;
 
-    private String genero;
+    private String email;
 
-    private String sinopsis;
+    private String numeroTelefonico;
 
-    private String reparto;
-
-    private String estado;
-
+    private String contraseña;
 
 }
