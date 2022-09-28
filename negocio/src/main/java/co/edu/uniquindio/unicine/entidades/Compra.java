@@ -2,11 +2,9 @@ package co.edu.uniquindio.unicine.entidades;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -31,5 +29,12 @@ public class Compra {
     private float subtotal;
 
     private float total;
+
+    @ManyToMany
+    private List<Confiteria>confiteria;
+
+    @ManyToOne
+    private Cliente cliente;
+
 
 }
