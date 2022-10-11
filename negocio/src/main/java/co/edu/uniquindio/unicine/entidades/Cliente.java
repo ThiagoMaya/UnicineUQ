@@ -1,4 +1,4 @@
-package co.edu.uniquindio.unicine.test.entidades;
+package co.edu.uniquindio.unicine.entidades;
 
 import lombok.*;
 
@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode (onlyExplicitlyIncluded = true)
 @ToString
 public class Cliente implements Serializable {
@@ -31,9 +30,21 @@ public class Cliente implements Serializable {
     @ElementCollection
     private List<String> telefonos;
 
+    @Column(length = 16, nullable = false)
     private String contraseña;
 
-    //@OneToMany(mappedBy = "cliente")
-    //private List<Compra> compras;
+    @OneToMany(mappedBy = "cliente")
+    private List<CuponCliente> cuponCliente;
 
+    @OneToMany(mappedBy = "cliente")
+    private List<Compra> compras;
+
+    @Builder
+    public Cliente(String cedula, String nombre, String email, List<String> telefonos, String contraseña) {
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.email = email;
+        this.telefonos = telefonos;
+        this.contraseña = contraseña;
+    }
 }

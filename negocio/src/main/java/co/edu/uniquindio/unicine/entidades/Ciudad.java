@@ -1,6 +1,7 @@
-package co.edu.uniquindio.unicine.test.entidades;
+package co.edu.uniquindio.unicine.entidades;
 
 import lombok.*;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,24 +11,25 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Confiteria implements Serializable {
+public class Ciudad implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Integer idProducto;
+    private Integer codigo;
 
+    @Column(nullable = false, length = 100)
     private String nombre;
 
-    private String descripcion;
+    @OneToMany(mappedBy = "ciudad")
+    private List<Teatro> teatros;
 
-    private String estado;
+    @Builder
+    public Ciudad(String nombre) {this.nombre=nombre;}
 
-    private float precio;
 
-    @ManyToMany(mappedBy = "confiteria")
-    private List<Compra> compra;
+
+
 }

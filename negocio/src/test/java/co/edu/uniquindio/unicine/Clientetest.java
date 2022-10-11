@@ -1,8 +1,8 @@
-package co.edu.uniquindio.unicine.test;
+package co.edu.uniquindio.unicine;
 
 
-import co.edu.uniquindio.unicine.test.entidades.Cliente;
-import co.edu.uniquindio.unicine.test.repositorios.ClienteRepositorio;
+import co.edu.uniquindio.unicine.repositorios.ClienteRepositorio;
+import co.edu.uniquindio.unicine.entidades.Cliente;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)

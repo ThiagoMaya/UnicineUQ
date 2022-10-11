@@ -1,11 +1,8 @@
-package co.edu.uniquindio.unicine.test.entidades;
+package co.edu.uniquindio.unicine.entidades;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -19,7 +16,13 @@ public class Silla {
 
     @Id
     @EqualsAndHashCode.Include
-    private String idSilla;
+    private Integer numero;
+
+    @Column(nullable = false)
+    private String fila;
+
+    @Column(nullable = false)
+    private String columna;
 
 
 }
