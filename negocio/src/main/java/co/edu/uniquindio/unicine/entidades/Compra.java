@@ -36,7 +36,7 @@ public class Compra {
     @OneToMany(mappedBy = "compra")
     private List<CompraConfiteria> compraConfiterias;
 
-    @OneToMany(mappedBy = "entrada")
+    @OneToMany(mappedBy = "compra")
     private List<Entrada> entradas;
 
     @OneToOne

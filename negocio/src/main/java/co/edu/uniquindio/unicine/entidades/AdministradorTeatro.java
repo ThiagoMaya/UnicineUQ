@@ -28,7 +28,7 @@ public class AdministradorTeatro implements Serializable {
 
     private String contraseña;
 
-    @OneToMany(mappedBy = "teatro")
+    @OneToMany(mappedBy = "adminTeatro")
     private List<Teatro> teatros;
 
     @Builder

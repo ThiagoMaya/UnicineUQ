@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class DistribucionSIllas implements Serializable {
+public class DistribucionSillas implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class DistribucionSIllas implements Serializable {
     private List <Sala> listaSalas;
 
     @Builder
-    public DistribucionSIllas(String esquema, Integer total_Sillas, Integer filas, Integer columnas) {
+    public DistribucionSillas(String esquema, Integer total_Sillas, Integer filas, Integer columnas) {
         this.esquema = esquema;
         this.total_Sillas = total_Sillas;
         this.filas = filas;

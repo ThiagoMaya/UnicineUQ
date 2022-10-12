@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
+
 @Entity
 @Getter
 @Setter
@@ -28,13 +28,13 @@ public class Sala implements Serializable {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private DistribucionSIllas distribucionSillas;
+    private DistribucionSillas distribucionSillas;
 
     @OneToMany(mappedBy = "sala")
     private List<Funcion> funcion;
 
     @Builder
-    public Sala(String nombre, Teatro teatro, DistribucionSIllas distribucionSillas) {
+    public Sala(String nombre, Teatro teatro, DistribucionSillas distribucionSillas) {
         this.nombre = nombre;
         this.teatro = teatro;
         this.distribucionSillas = distribucionSillas;
