@@ -18,7 +18,7 @@ public class AdministradorTeatro implements Serializable {
 
     @Id
     @EqualsAndHashCode.Include
-    private String cedula;
+    private Integer cedula;
 
     private String nombre;
 
@@ -28,12 +28,13 @@ public class AdministradorTeatro implements Serializable {
 
     private String contraseña;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "adminTeatro")
     private List<Teatro> teatros;
 
     @Builder
 
-    public AdministradorTeatro(String cedula, String nombre, String email, String numeroTelefonico, String contraseña) {
+    public AdministradorTeatro(Integer cedula, String nombre, String email, String numeroTelefonico, String contraseña) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.email = email;

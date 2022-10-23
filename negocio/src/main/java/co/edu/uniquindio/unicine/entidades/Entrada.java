@@ -20,14 +20,10 @@ public class Entrada implements Serializable {
     private Integer Codigo;
 
     @Positive
-    @Column(nullable = false)
     private Integer precio;
 
-
-    @Column(nullable = false)
     private String fila;
 
-    @Column(nullable = false)
     private String columna;
 
     @ManyToOne

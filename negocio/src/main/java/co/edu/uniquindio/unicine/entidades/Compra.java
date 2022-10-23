@@ -23,21 +23,25 @@ public class Compra {
     private Integer codigo;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false,length = 10)
     private MedioPago medioPago;
 
     @Column(nullable = false)
     private LocalDateTime fechaCompra;
 
     @Positive
-    @Column(nullable = false)
     private float total;
 
+    @Positive
+    private Integer numeroEntradas;
+
+    @ToString.Exclude
     @OneToMany(mappedBy = "compra")
     private List<CompraConfiteria> compraConfiterias;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "compra")
     private List<Entrada> entradas;
+
 
     @OneToOne
     private CuponCliente cuponCliente;

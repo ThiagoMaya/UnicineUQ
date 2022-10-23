@@ -30,6 +30,7 @@ public class Sala implements Serializable {
     @JoinColumn(nullable = false)
     private DistribucionSillas distribucionSillas;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "sala")
     private List<Funcion> funcion;
 

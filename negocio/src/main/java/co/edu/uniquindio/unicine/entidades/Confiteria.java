@@ -31,6 +31,7 @@ public class Confiteria implements Serializable {
     @Column( nullable = false)
     private float precio;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "confiteria")
     private List<CompraConfiteria> compraConfiterias;
 

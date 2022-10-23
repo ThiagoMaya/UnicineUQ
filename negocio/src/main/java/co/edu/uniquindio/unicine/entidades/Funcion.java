@@ -41,6 +41,7 @@ public class Funcion implements Serializable {
     @JoinColumn(nullable = false)
     private Sala sala;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "funcion")
     private List<Compra> compra;
 

@@ -42,6 +42,7 @@ public class Pelicula implements Serializable {
     @Column(nullable = false)
     private Boolean estado;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "pelicula")
     private List<Funcion> funcion;
 

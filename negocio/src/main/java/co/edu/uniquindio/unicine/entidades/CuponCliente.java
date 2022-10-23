@@ -31,6 +31,7 @@ public class CuponCliente implements Serializable {
     @JoinColumn(nullable = false)
     private Cupon cupon;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "cuponCliente")
     private Compra compra;
 
