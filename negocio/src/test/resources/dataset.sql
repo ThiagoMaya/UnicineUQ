@@ -1,5 +1,5 @@
-insert into cliente values (1,"Sdsadsa","santiagomayacc2@gmail.com", true, "Urlfoto","pepe");
-insert into cliente values (2,"esfs","mariana240312@gmail.com", false, "Urlfoto","jose");
+insert into cliente values (1,"Sdsadsa","santiagomaya@mail.com", true, "Urlfoto","pepe");
+insert into cliente values (2,"esfs","marian@mail.com", false, "Urlfoto","jose");
 insert into cliente values (3,"gdsgdsg","benzema@mail.com", false, "Urlfoto","Benzema");
 insert into cliente values (4,"sdgdsg","messi@mail.com", true, "Urlfoto","Leonel");
 insert into cliente values (5,"sdgfsdgds","bicho@mail.com",true, "Urlfoto","cristiano");
@@ -98,3 +98,7 @@ insert into cupon_cliente values (4, true, 1, 4);
 insert into cupon_cliente values (5, true, 1, 5);
 
 
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> 63628ab81d6adbc2d8ca416b1fae504185ae8091
