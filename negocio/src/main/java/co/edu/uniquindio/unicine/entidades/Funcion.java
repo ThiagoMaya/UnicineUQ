@@ -19,11 +19,10 @@ import java.util.Timer;
 @ToString
 public class Funcion implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Integer Codigo;
+    private Integer codigo;
 
     @Positive
     @Column(nullable = false)

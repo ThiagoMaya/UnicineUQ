@@ -1,10 +1,7 @@
 package co.edu.uniquindio.unicine.servicios;
 
 import co.edu.uniquindio.unicine.entidades.*;
-import co.edu.uniquindio.unicine.repositorios.AdministradorTeatroRepositorio;
-import co.edu.uniquindio.unicine.repositorios.FuncionRepositorio;
-import co.edu.uniquindio.unicine.repositorios.SalaRepositorio;
-import co.edu.uniquindio.unicine.repositorios.TeatroRepositorio;
+import co.edu.uniquindio.unicine.repositorios.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,16 +14,28 @@ public class AdminTeatroServicioImpl implements AdminTeatroServicio{
 
     private final TeatroRepositorio teatroRepositorio;
 
+    private final CiudadRepositorio ciudadRepositorio;
+
     private final FuncionRepositorio funcionRepositorio;
 
     private final SalaRepositorio salaRepositorio;
 
+    private final PeliculaRepositorio peliculaRepositorio;
 
-    public AdminTeatroServicioImpl(AdministradorTeatroRepositorio administradorTeatroRepositorio, TeatroRepositorio teatroRepositorio, FuncionRepositorio funcionRepositorio, SalaRepositorio salaRepositorio) {
+    private final HorarioRepositorio horarioRepositorio;
+
+    private final DistribucionSillasRepositorio distribucionSillasRepositorio;
+
+
+    public AdminTeatroServicioImpl(AdministradorTeatroRepositorio administradorTeatroRepositorio, TeatroRepositorio teatroRepositorio, CiudadRepositorio ciudadRepositorio, FuncionRepositorio funcionRepositorio, SalaRepositorio salaRepositorio, PeliculaRepositorio peliculaRepositorio, HorarioRepositorio horarioRepositorio, DistribucionSillasRepositorio distribucionSillasRepositorio) {
         this.administradorTeatroRepositorio = administradorTeatroRepositorio;
         this.teatroRepositorio = teatroRepositorio;
+        this.ciudadRepositorio = ciudadRepositorio;
         this.funcionRepositorio = funcionRepositorio;
         this.salaRepositorio = salaRepositorio;
+        this.peliculaRepositorio = peliculaRepositorio;
+        this.horarioRepositorio = horarioRepositorio;
+        this.distribucionSillasRepositorio = distribucionSillasRepositorio;
     }
 
     @Override
@@ -41,11 +50,12 @@ public class AdminTeatroServicioImpl implements AdminTeatroServicio{
     @Override
     public Teatro crearTeatro(Teatro teatro) throws Exception {
 
+        if(esRepetido(teatro.getNombre())) throw new Exception("Ya se ha registrado un teatro con ese nombre anteriormente");
         return teatroRepositorio.save(teatro);
     }
 
-    private boolean esRepetido(Integer codigo) {
-        return teatroRepositorio.findById(codigo).orElse(null)!=null;
+    private boolean esRepetido(String nombre) {
+        return teatroRepositorio.findByNombre(nombre).orElse(null)!=null;
 
     }
 
@@ -54,8 +64,6 @@ public class AdminTeatroServicioImpl implements AdminTeatroServicio{
         Optional<Teatro> actualizar = teatroRepositorio.findById(teatro.getCodigo());
 
         if (actualizar.isEmpty()) throw new Exception("No se ha encontrado al teatro");
-        if(esRepetido(teatro.getCodigo()))throw new Exception("El teatro ya se ha registrado anteriormente");
-
 
         return teatroRepositorio.save(teatro);
     }
@@ -73,6 +81,27 @@ public class AdminTeatroServicioImpl implements AdminTeatroServicio{
     }
 
     @Override
+    public Pelicula obtenerPelicula(String nombrePelicula) throws Exception {
+        Optional<Pelicula> guardado = peliculaRepositorio.findByNombre(nombrePelicula);
+
+        if(!guardado.isPresent()){
+            throw new Exception("La pelicula no existe");
+        }
+        return guardado.get();
+    }
+
+    @Override
+    public Horario obtenerHorario(Integer idHorario) throws Exception {
+        Optional<Horario> guardado = horarioRepositorio.findById(idHorario);
+
+        if(!guardado.isPresent()){
+            throw new Exception("El teatro no existe");
+        }
+        return guardado.get();
+    }
+
+
+    @Override
     public Teatro obtenerTeatro(Integer idTeatro) throws Exception {
         Optional<Teatro> guardado = teatroRepositorio.findById(idTeatro);
 
@@ -87,6 +116,16 @@ public class AdminTeatroServicioImpl implements AdminTeatroServicio{
         return teatroRepositorio.findAll();
     }
 
+    @Override
+    public Ciudad obtenerCiudad(Integer codigoCiudad) throws Exception {
+
+        Optional<Ciudad> guardado = ciudadRepositorio.findById(codigoCiudad);
+
+        if(!guardado.isPresent()){
+            throw new Exception("El administrador no existe");
+        }
+        return guardado.get();
+    }
     @Override
     public Sala crearSala(Sala sala) throws Exception {
         boolean salaRepetida = salaRepetida(sala.getCodigo());
@@ -107,7 +146,7 @@ public class AdminTeatroServicioImpl implements AdminTeatroServicio{
         Optional<Sala> actualizar = salaRepositorio.findById(sala.getCodigo());
 
         if (actualizar.isEmpty()) throw new Exception("No se ha encontrado la sala");
-        if(esRepetido(sala.getCodigo()))throw new Exception("La sala ya se ha registrado anteriormente");
+        if(salaRepetida(sala.getCodigo()))throw new Exception("La sala ya se ha registrado anteriormente");
 
 
         return salaRepositorio.save(sala);
@@ -141,29 +180,28 @@ public class AdminTeatroServicioImpl implements AdminTeatroServicio{
 
     @Override
     public Funcion crearFuncion(Funcion funcion) throws Exception {
-        boolean salaRepetida = funcionRepetida(funcion.getCodigo());
 
-        Funcion funcionAux = funcionRepositorio.obtenerPorSala(funcion.getSala());
-
-         verificarFuncion(funcion);
+        verificarFuncion(funcion);
 
         return funcionRepositorio.save(funcion);
     }
 
     private void verificarFuncion(Funcion funcion) throws Exception {
-        Funcion funcionAux = funcionRepositorio.obtenerPorSala(funcion.getSala());
+        List<Funcion> funciones = funcionRepositorio.obtenerPorSala(funcion.getSala());
 
-        if(funcionAux.getSala().equals(funcion.getSala())){
 
-            Funcion funcionAux2 = funcionRepositorio.obtenerPorHorario(funcion.getHorario());
+        for( Funcion funcionAux :funciones) {
+            if(funcionAux.getSala().equals(funcion.getSala())){
 
-            if(funcionAux.getHorario().equals(funcion.getHorario())){
-                throw new Exception("Ya existe una funcion a esa hora en esa sala");
+                if(funcionAux.getHorario().equals(funcion.getHorario())){
+                    throw new Exception("Ya existe una funcion a esa hora en esa sala");
+                }
+            }
+            if(funcionRepetida(funcion.getCodigo())){
+                throw new Exception("La funcion ya se ha registrado anteriormente");
             }
         }
-        if(funcionRepetida(funcion.getCodigo())){
-            throw new Exception("La funcion ya se ha registrado anteriormente");
-        }
+
     }
 
     private boolean funcionRepetida(Integer codigo) {
@@ -206,5 +244,47 @@ public class AdminTeatroServicioImpl implements AdminTeatroServicio{
     @Override
     public List<Funcion> listarFunciones() {
         return funcionRepositorio.findAll();
+    }
+
+    @Override
+    public DistribucionSillas crearDistribucion(DistribucionSillas distribucionSillas) throws Exception {
+
+        return distribucionSillasRepositorio.save(distribucionSillas);
+
+    }
+
+    @Override
+    public DistribucionSillas actualizarDistribucion(DistribucionSillas distribucionSillas) throws Exception {
+        Optional<DistribucionSillas> actualizar = distribucionSillasRepositorio.findById(distribucionSillas.getCodigo());
+
+        if (actualizar.isEmpty()) throw new Exception("No se ha encontrado la distribucion");
+
+        return distribucionSillasRepositorio.save(distribucionSillas);
+    }
+
+    @Override
+    public void eliminarDistribucion(Integer idDistribucion) throws Exception {
+
+        Optional<DistribucionSillas> eliminar = distribucionSillasRepositorio.findById(idDistribucion);
+
+        if(eliminar.isEmpty()){
+            throw new Exception("La distribucion no existe");
+        }
+        distribucionSillasRepositorio.delete(eliminar.get());
+    }
+
+    @Override
+    public DistribucionSillas obtenerDistribucion(Integer idFuncion) throws Exception {
+        Optional<DistribucionSillas> guardado = distribucionSillasRepositorio.findById(idFuncion);
+
+        if(!guardado.isPresent()){
+            throw new Exception("La distribucion no existe");
+        }
+        return guardado.get();
+    }
+
+    @Override
+    public List<DistribucionSillas> listarDistribucion() {
+        return distribucionSillasRepositorio.findAll();
     }
 }

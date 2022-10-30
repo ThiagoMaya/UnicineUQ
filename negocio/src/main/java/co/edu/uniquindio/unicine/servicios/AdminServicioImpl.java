@@ -18,14 +18,16 @@ public class AdminServicioImpl implements AdminServicio{
 
     private final CuponRepositorio cuponRepositorio;
 
+    private final CiudadRepositorio ciudadRepositorio;
 
     private final AdministradorTeatroRepositorio administradorTeatroRepositorio;
 
-    public AdminServicioImpl(AdministradorRepositorio administradorRepositorio, PeliculaRepositorio peliculaRepositorio, ConfiteriaRepositorio confiteriaRepositorio, CuponRepositorio cuponRepositorio, AdministradorTeatroRepositorio administradorTeatroRepositorio) {
+    public AdminServicioImpl(AdministradorRepositorio administradorRepositorio, PeliculaRepositorio peliculaRepositorio, ConfiteriaRepositorio confiteriaRepositorio, CuponRepositorio cuponRepositorio, CiudadRepositorio ciudadRepositorio, AdministradorTeatroRepositorio administradorTeatroRepositorio) {
         this.administradorRepositorio = administradorRepositorio;
         this.peliculaRepositorio = peliculaRepositorio;
         this.confiteriaRepositorio = confiteriaRepositorio;
         this.cuponRepositorio = cuponRepositorio;
+        this.ciudadRepositorio = ciudadRepositorio;
         this.administradorTeatroRepositorio = administradorTeatroRepositorio;
     }
 
@@ -104,6 +106,19 @@ public class AdminServicioImpl implements AdminServicio{
     public List<AdministradorTeatro> listarAdministradores() {
         return administradorTeatroRepositorio.findAll();
     }
+
+    @Override
+    public Ciudad obtenerCiudad(Integer codigoCiudad) throws Exception {
+
+        Optional<Ciudad> guardado = ciudadRepositorio.findById(codigoCiudad);
+
+        if(!guardado.isPresent()){
+            throw new Exception("El administrador no existe");
+        }
+        return guardado.get();
+    }
+
+
 
     @Override
     public Pelicula crearPelicula(Pelicula pelicula) throws Exception {

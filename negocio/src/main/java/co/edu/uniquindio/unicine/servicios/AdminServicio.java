@@ -19,7 +19,10 @@ public interface AdminServicio {
 
     AdministradorTeatro obtenerAdministrador(Integer cedulaAdministrador) throws Exception;
 
+
     List<AdministradorTeatro> listarAdministradores();
+
+    Ciudad obtenerCiudad(Integer codigoCiudad)throws  Exception;
 
 
     Pelicula crearPelicula(Pelicula pelicula) throws Exception;

@@ -73,7 +73,6 @@ insert into compra values (3,"2022-10-25 23:11:00",null,3,15000,3,null,1);
 insert into compra values (4,"2022-10-25 23:11:00",null,4,15000,4,null,1);
 insert into compra values (5,"2022-10-25 23:11:00",null,5,15000,5,null,1);
 
-
 insert into confiteria values(1,"fritos","disponible","papitas",10000.0);
 insert into confiteria values(2,"fritos","disponible","doritos",10000.0);
 insert into confiteria values(3,"Bebidas","disponible","gaseosa",10000.0);
@@ -99,4 +98,3 @@ insert into cupon_cliente values (4, true, 1, 4);
 insert into cupon_cliente values (5, true, 1, 5);
 
 
- 

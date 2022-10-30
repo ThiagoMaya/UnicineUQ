@@ -1,9 +1,6 @@
 package co.edu.uniquindio.unicine.servicios;
 
-import co.edu.uniquindio.unicine.entidades.AdministradorTeatro;
-import co.edu.uniquindio.unicine.entidades.Funcion;
-import co.edu.uniquindio.unicine.entidades.Sala;
-import co.edu.uniquindio.unicine.entidades.Teatro;
+import co.edu.uniquindio.unicine.entidades.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +21,11 @@ public interface AdminTeatroServicio {
 
     List<Teatro> listarTeatros();
 
+    Pelicula obtenerPelicula(String nombrePelicula) throws Exception;
+
+    Horario obtenerHorario(Integer idHorario) throws Exception;
+
+    Ciudad obtenerCiudad(Integer codigoCiudad)throws  Exception;
 
     Sala crearSala(Sala sala) throws Exception;
 
@@ -45,5 +47,15 @@ public interface AdminTeatroServicio {
     Funcion obtenerFuncion(Integer idFuncion) throws Exception;
 
     List<Funcion> listarFunciones();
+
+    DistribucionSillas crearDistribucion(DistribucionSillas distribucionSillas) throws Exception;
+
+    DistribucionSillas actualizarDistribucion(DistribucionSillas distribucionSillas) throws Exception;
+
+    void eliminarDistribucion(Integer idDistribucion) throws Exception;
+
+    DistribucionSillas obtenerDistribucion(Integer idDistribucion) throws Exception;
+
+    List<DistribucionSillas> listarDistribucion();
 
 }

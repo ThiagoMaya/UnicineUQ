@@ -8,19 +8,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface FuncionRepositorio extends JpaRepository<Funcion, Integer> {
 
-    @Query("select f.pelicula.nombre  from Funcion f where f.Codigo = :codigoFuncion")
+    @Query("select f.pelicula.nombre  from Funcion f where f.codigo = :codigoFuncion")
     String nombrePelicula(Integer codigoFuncion);
 
-    @Query("select c from Funcion c where c.Codigo = ?1")
+    @Query("select c from Funcion c where c.codigo = ?1")
     Funcion obtenerPorCodigo(Integer codigo);
 
     @Query("select c from Funcion c where c.horario = ?1")
     Funcion obtenerPorHorario(Horario horario);
 
     @Query("select c from Funcion c where c.sala = ?1")
-    Funcion obtenerPorSala(Sala sala);
+    List<Funcion> obtenerPorSala(Sala sala);
 
 }
