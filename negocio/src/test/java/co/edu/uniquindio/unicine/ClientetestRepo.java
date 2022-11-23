@@ -20,7 +20,7 @@ import java.util.Optional;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ClientetestRepo {
-
+/*
     @Autowired
     private ClienteRepositorio clienterepository;
 
@@ -109,7 +109,7 @@ public class ClientetestRepo {
     @Sql("classpath:dataset.sql")
     public void obtenerPorCorreo(){
 
-        Cliente cliente = clienterepository.findByCorreo("pepe@mail.com").orElse(null);
+        Cliente cliente = clienterepository.findByEmail("pepe@mail.com").orElse(null);
         Assertions.assertNotNull(cliente);
 
 
@@ -151,5 +151,8 @@ public class ClientetestRepo {
 
         compras.forEach(System.out::println);
     }
+
+
+ */
 }
 
