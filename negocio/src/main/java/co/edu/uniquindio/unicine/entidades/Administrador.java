@@ -13,30 +13,16 @@ import java.util.Objects;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class Administrador implements Serializable {
+public class Administrador extends Persona implements Serializable {
 
-    @Id
-    @EqualsAndHashCode.Include
-    private Integer cedula;
 
-    @Column(nullable = false)
-    private String nombre;
-
-    @Column(nullable = false)
-    private String email;
 
     @Column(nullable = false)
     private String numeroTelefonico;
 
-    @Column(nullable = false)
-    private String contraseña;
 
-    @Builder
-    public Administrador(Integer cedula, String nombre, String email, String numeroTelefonico, String contraseña) {
-        this.cedula = cedula;
-        this.nombre = nombre;
-        this.email = email;
+    public Administrador(Integer cedula, String nombre, String correo, String contrasena, String numeroTelefonico) {
+        super(cedula, nombre, correo, contrasena);
         this.numeroTelefonico = numeroTelefonico;
-        this.contraseña = contraseña;
     }
 }

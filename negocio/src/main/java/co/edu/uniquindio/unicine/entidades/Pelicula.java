@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Entity
@@ -23,37 +24,48 @@ public class Pelicula implements Serializable {
     @Column(nullable = false)
     private String nombre;
 
+    @ElementCollection
     @Enumerated(EnumType.STRING)
     @Column(nullable = false,length = 25)
-    private Genero genero;
+    private List<Genero> generos;
 
+    @Lob
     @Column(nullable = false)
     private String sinopsis;
 
+    @Lob
     @Column(nullable = false)
     private String reparto;
 
     @Column(nullable = false)
     private String url_trailer;
 
+    @ElementCollection
     @Column(nullable = false)
-    private String url_imagen;
+    private Map<String, String> imagenes;
 
     @Column(nullable = false)
-    private Boolean estado;
+    private EstadoPelicula estado;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "pelicula")
     private List<Funcion> funcion;
 
     @Builder
-    public Pelicula(String nombre, Genero genero, String sinopsis, String reparto, String url_trailer, String url_imagen, Boolean estado) {
+    public Pelicula(String nombre, Genero genero, String sinopsis, String reparto, String url_trailer, EstadoPelicula estado) {
         this.nombre = nombre;
-        this.genero = genero;
+        this.generos = generos;
         this.sinopsis = sinopsis;
         this.reparto = reparto;
         this.url_trailer = url_trailer;
-        this.url_imagen = url_imagen;
         this.estado = estado;
+    }
+
+    public String getImagenPrincipal(){
+        if (!imagenes.isEmpty()) {
+            String primera = imagenes.keySet().toArray()[0].toString();
+            return imagenes.get(primera);
+        }
+        return "";
     }
 }

@@ -233,7 +233,7 @@ public class ClienteServicioTest
     @Sql("classpath:dataset.sql")
     public void buscarPeliculasEstado() {
         try {
-            List<Pelicula> peliculas = clienteServicio.buscarPeliculaEstado(true);
+            List<Pelicula> peliculas = clienteServicio.buscarPeliculaEstado(EstadoPelicula.CARTELERA);
             peliculas.forEach(System.out::println);
         } catch (Exception e) {
             throw new RuntimeException(e);

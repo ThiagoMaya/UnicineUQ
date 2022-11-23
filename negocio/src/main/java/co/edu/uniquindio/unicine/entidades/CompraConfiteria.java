@@ -39,4 +39,11 @@ public class CompraConfiteria {
         this.confiteria = confiteria;
         this.compra = compra;
     }
+
+    public int actualizarUnidadesCompradas(char operacion) {
+        if(operacion == '-') unidades--;
+        if(operacion == '+') unidades++;
+
+        return unidades;
+    }
 }

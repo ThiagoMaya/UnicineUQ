@@ -29,6 +29,9 @@ public class Confiteria implements Serializable {
     private String estado;
 
     @Column( nullable = false)
+    private String imagen;
+
+    @Column( nullable = false)
     private float precio;
 
     @ToString.Exclude
@@ -36,10 +39,11 @@ public class Confiteria implements Serializable {
     private List<CompraConfiteria> compraConfiterias;
 
     @Builder
-    public Confiteria(String nombre, String descripcion, String estado, float precio) {
+    public Confiteria(String nombre, String descripcion, String estado, float precio, String imagen) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.estado = estado;
         this.precio = precio;
+        this.imagen = imagen;
     }
 }

@@ -22,6 +22,6 @@ public interface AdministradorRepositorio extends JpaRepository<Administrador,In
 
     Optional<Administrador> findByCedula(Integer cedula);
 
-    @Query("select c from Administrador c where c.email =:correo and c.contraseña =:contraseña")
-    Administrador comprobarAutenticacion(String correo, String contraseña);
+    @Query("select c from Administrador c where c.email =:email and c.contrasena =:contrasena")
+    Administrador comprobarAutenticacion(String email, String contrasena);
 }

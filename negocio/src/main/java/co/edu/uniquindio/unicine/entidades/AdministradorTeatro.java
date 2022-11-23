@@ -2,6 +2,7 @@ package co.edu.uniquindio.unicine.entidades;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -14,31 +15,20 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class AdministradorTeatro implements Serializable {
+public class AdministradorTeatro extends Persona implements Serializable {
 
-    @Id
-    @EqualsAndHashCode.Include
-    private Integer cedula;
 
-    private String nombre;
-
-    private String email;
 
     private String numeroTelefonico;
 
-    private String contraseña;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "adminTeatro")
     private List<Teatro> teatros;
 
     @Builder
-
-    public AdministradorTeatro(Integer cedula, String nombre, String email, String numeroTelefonico, String contraseña) {
-        this.cedula = cedula;
-        this.nombre = nombre;
-        this.email = email;
+    public AdministradorTeatro(Integer cedula, String nombre, String correo, String contrasena, String numeroTelefonico) {
+        super(cedula, nombre, correo, contrasena);
         this.numeroTelefonico = numeroTelefonico;
-        this.contraseña = contraseña;
     }
 }

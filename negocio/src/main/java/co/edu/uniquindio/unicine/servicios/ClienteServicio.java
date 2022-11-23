@@ -1,9 +1,11 @@
 package co.edu.uniquindio.unicine.servicios;
 
 import co.edu.uniquindio.unicine.entidades.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface ClienteServicio {
 
     Cliente obtenerCliente(Integer cedula) throws Exception;
@@ -26,8 +28,6 @@ public interface ClienteServicio {
 
     Compra escogerNumeroEntradas(Integer codigoCompra, Integer numeroEntradas)throws Exception;
 
-    Entrada escogerSillas(Integer codigoEntrada, String fila, String columna) throws Exception;
-
     public Compra redimirCupon(String criterio, Integer codigoCompra)throws Exception;
 
     List<CompraConfiteria>comprarConfiteria(Integer codigoCompra, Integer codigoConfiteria, Integer cantidad)throws Exception;
@@ -38,7 +38,15 @@ public interface ClienteServicio {
 
     List<Pelicula> buscarPeliculaGenero(Genero generoPelicula)throws Exception;
 
-    List<Pelicula> buscarPeliculaEstado(Boolean estadoPelicula)throws Exception;
+    List<Pelicula> buscarPeliculaEstado(EstadoPelicula estadoPelicula)throws Exception;
 
     Compra elegirMetodoPago(Integer compra, MedioPago metodoPago) throws Exception;
+
+    List<Pelicula> listarPeliculasEstado(Integer codigoCiudad, EstadoPelicula estadoPelicula) throws Exception;
+
+    Compra finalizarCompra(Compra compra) throws Exception ;
+
+    Compra obtenerCompra(Integer idCompra) throws Exception;
+
+    List<Entrada> obtenerEntradasCompradas(Funcion funcion) throws Exception;
 }

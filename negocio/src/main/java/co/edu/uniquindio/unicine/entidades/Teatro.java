@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -32,6 +33,10 @@ public class Teatro implements Serializable {
     @ManyToOne
     @JoinColumn(nullable = false)
     private AdministradorTeatro adminTeatro;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "teatro")
+    private List<Sala> salas;
 
 
 

@@ -22,22 +22,23 @@ public class Horario implements Serializable {
     private Integer Codigo;
 
     @Column(nullable = false)
+    private String hora;
+
+    @Column(nullable = false)
+    private String dia ;
+
+    @Column(nullable = false)
     private Date fecha;
-
-    @Column(nullable = false)
-    private Date fecha_Inicio;
-
-    @Column(nullable = false)
-    private Date fecha_fin;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "horario")
     private List<Funcion> funcion;
 
-    @Builder
-    public Horario(Date fecha, Date fecha_Inicio, Date fecha_fin) {
+   @Builder
+    public Horario(Integer codigo, String hora, String dia, Date fecha) {
+        Codigo = codigo;
+        this.hora = hora;
+        this.dia = dia;
         this.fecha = fecha;
-        this.fecha_Inicio = fecha_Inicio;
-        this.fecha_fin = fecha_fin;
     }
 }

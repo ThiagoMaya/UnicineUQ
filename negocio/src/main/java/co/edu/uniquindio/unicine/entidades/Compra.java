@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class Compra {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "compra")
-    private List<CompraConfiteria> compraConfiterias;
+    private List<CompraConfiteria> compraConfiterias = new ArrayList<>();
 
     @ToString.Exclude
     @OneToMany(mappedBy = "compra")
@@ -63,5 +64,37 @@ public class Compra {
         this.cuponCliente = cuponCliente;
         this.cliente = cliente;
         this.funcion = funcion;
+    }
+
+
+    public Float calcularValorTotal() throws Exception {
+        float total = 0f;
+
+        if(funcion == null)
+            throw new Exception("No se puede calcular el valor de la compra");
+
+        if(!entradas.isEmpty())
+            total += obtenerTotalEntradas();
+
+        if(this.compraConfiterias != null) total += obtenerTotalConfiteria();
+
+        this.total = total;
+        return this.total;
+    }
+
+    public float obtenerTotalConfiteria() {
+        float total = 0f;
+        for (CompraConfiteria c : this.compraConfiterias) total += c.getPrecio() * c.getUnidades();
+        return total;
+    }
+
+    public float obtenerTotalEntradas() {
+        float total = 0;
+
+        for(Entrada e : entradas) {
+            total += e.getPrecio();
+        }
+
+        return total;
     }
 }

@@ -31,7 +31,10 @@ public interface AdminServicio {
 
     void eliminarPelicula(String nombrePelicula) throws Exception;
 
-    Pelicula obtenerPelicula(String nombrePelicula) throws Exception;
+
+    public List<Funcion> obtenerFuncionesPelicula(Integer peliculaCodigo) throws Exception;
+
+    Pelicula obtenerPelicula(Integer idPelicula) throws Exception;
 
     List<Pelicula> listarPeliculas();
 
@@ -56,5 +59,7 @@ public interface AdminServicio {
     Cupon obtenerCupon(Integer idCupon) throws Exception;
 
     List<Cupon> listarCupones();
+
+
 }
 

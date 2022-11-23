@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title> Página principal </title>
+    <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+    <h:outputScript name="bootstrap.bundle.min.js" library="js"/>
+    <h:outputStylesheet name="styles.css" library="css"/>
+    <h:outputStylesheet name="carousel.css" library="css"/>
+
+
+</h:head>
+
+    <h:body>
+
+        <div id="barra_nav">
+
+            <header>
+
+                <div class="text-bg-dark" style="background: #6c757d">
+                    <div class="container-md align-items-center ">
+                        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom ">
+                            <a href="/" class="d-flex align-items-center col-md-0 mb-0 mb-md-0 text-white text-decoration-none ">
+                                <h:graphicImage library="img" name="Icono.png" styleClass="img-icon me-3"> </h:graphicImage>
+                                <span class="fs-4 ">Unicine</span>
+                            </a>
+
+                            <ul class="nav col-12 col-md-auto col mb-0 justify-content-center mb-md-0 nav">
+
+                                <li >
+                                    <a href=".xhtml" class="nav-link text-white text-center">
+                                        <i class="pi pi-home" /><br/>
+                                        Inicio
+                                    </a>
+                                </li>
+                                <li jsf:rendered="#{seguridadBean.autenticado}">
+                                    <a href="" class="nav-link text-white text-center">
+                                        <i class="pi pi-shopping-cart" /><br/>
+                                        Mis compras
+                                    </a>
+                                </li>
+                                <li jsf:rendered="#{seguridadBean.autenticado}">
+                                    <a href="" class="nav-link text-white text-center">
+                                        <i class="pi pi-user" /><br/>
+                                        Perfil
+                                    </a>
+                                </li>
+                            </ul>
+
+
+                            <div class="text-end">
+
+                                <h:form rendered="#{seguridadBean.autenticado}">
+
+                                    <p:outputLabel styleClass="me-3" value="#{seguridadBean.personaActiva.nombre}"/>
+                                    <p:commandButton  value="Cerrar Sesión"  action="#{seguridadBean.cerrarSesion}" styleClass="rounded-button ui-button-warning"/>
+
+
+                                </h:form>
+
+                                <h:form rendered="#{!seguridadBean.autenticado}">
+
+                                    <p:commandButton value="Registrarse" styleClass="rounded-button ui-button-outlined text-white me-3"/>
+                                    <p:commandButton value="Login"  oncomplete="PF('iniciar_sesion').show()" styleClass="rounded-button ui-button-warning"/>
+
+                                </h:form>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+
+
+        <div id="contenido" class="cuerpo_pagina">
+            <ui:insert name="contenido">Contenido</ui:insert>
+        </div>
+
+
+        <div class="container">
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                <div class="col-md-4 d-flex align-items-center">
+                    <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                        <h:graphicImage library="img" name="Icono.png" styleClass="img-icon me-3"> </h:graphicImage>
+
+                    </a>
+                    <span class="mb-3 mb-md-0 text-muted"> 2022 Unicine</span>
+                </div>
+
+                <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                    <li class="ms-3"><a class="text-muted" href="#"> <i class="pi pi-facebook"/> </a></li>
+                    <li class="ms-3"><a class="text-muted" href="#"> <i class="pi pi-instagram"/></a></li>
+                    <li class="ms-3"><a class="text-muted" href="#"> <i class="pi pi-twitter"/></a></li>
+                </ul>
+            </footer>
+        </div>
+
+        <p:dialog widgetVar="iniciar_sesion" header="Inicio de Sesion" modal="true" showEffect="fade" resizable="false" rendered="#{!seguridadBean.autenticado}">
+            <div class="text-center">
+                 <h:graphicImage library="img" name="Icono.png" styleClass="img-icon me-3"> </h:graphicImage>
+            </div>
+            <span>
+
+            <h:form styleClass="text-center">
+                <h:panelGrid columns="1" cellpadding="3">
+                    <span>
+                        <p:outputLabel for="correo_login" value="Correo electronico:"/>
+                        <p:inputText id="correo_login" styleClass="input" value="#{seguridadBean.email}"/>
+                    </span>
+
+                    <span>
+                        <p:outputLabel for="contrasena_login" value="Contraseña:"/>
+                        <p:password id="contrasena_login" styleClass="input" value="#{seguridadBean.contrasena}"/>
+                    </span>
+
+                </h:panelGrid>
+
+                <p:commandButton styleClass="boton my-3" value="Iniciar Sesion" action="#{seguridadBean.iniciarSesionCliente}" update="@form" />
+
+                <p:separator />
+
+                <p:growl for="mensaje_login" showDetail="true"/>
+            </h:form>
+            </span>
+
+        </p:dialog>
+
+
+
+
+
+
+    </h:body>
+</html>

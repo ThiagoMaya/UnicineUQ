@@ -22,19 +22,21 @@ public class Entrada implements Serializable {
     @Positive
     private Integer precio;
 
-    private String fila;
+    private Integer fila;
 
-    private String columna;
+    private Integer columna;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private Compra compra;
 
     @Builder
-    public Entrada(Integer precio, String fila, String columna, Compra compra) {
+    public Entrada(Integer precio, Integer fila, Integer columna, Compra compra) {
         this.precio = precio;
         this.fila = fila;
         this.columna = columna;
         this.compra = compra;
     }
+
+
 }

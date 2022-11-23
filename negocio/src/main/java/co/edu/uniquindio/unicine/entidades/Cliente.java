@@ -13,32 +13,16 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode (onlyExplicitlyIncluded = true)
 @ToString
-public class Cliente implements Serializable {
+public class Cliente extends Persona implements Serializable {
 
-
-    @EqualsAndHashCode.Include
-    @Id
-    private Integer cedula;
-
-    @Column(length = 100, nullable = false)
-    private String nombre;
-
-    @NonNull
-    @Column(length = 100, nullable = false, unique = true)
-    @Email
-    private String correo;
 
     @ElementCollection
     private List<String> telefonos;
 
-    @ToString.Exclude
-    @Column(length = 16, nullable = false)
-    private String contraseña;
-
-    private String foto_url;
+    private String foto_url = "";
 
     @Column(nullable = false)
-    private boolean estado;
+    private boolean estado = false;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "cliente")
@@ -49,11 +33,11 @@ public class Cliente implements Serializable {
     private List<Compra> compras;
 
     @Builder
-    public Cliente( Integer cedula, String nombre, String correo, List<String> telefonos, String contraseña) {
-        this.nombre = nombre;
-        this.cedula = cedula;
-        this.correo = correo;
+
+    public Cliente(Integer cedula, String nombre, String email, String contrasena, List<String> telefonos, String foto_url, boolean estado) {
+        super(cedula, nombre, email, contrasena);
         this.telefonos = telefonos;
-        this.contraseña = contraseña;
+        this.foto_url = foto_url;
+        this.estado = estado;
     }
 }

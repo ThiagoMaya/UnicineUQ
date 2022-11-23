@@ -18,4 +18,7 @@ public interface EntradaRepositorio extends JpaRepository<Entrada, Integer> {
     @Query("select e from Entrada e where e.Codigo= :codigo")
     Entrada obtener(Integer codigo);
 
+    @Query("select c.entradas from Compra c where c.funcion.codigo = :idFuncion")
+    List<Entrada> obtenerEntradasCompradasFuncion(Integer idFuncion);
+
 }

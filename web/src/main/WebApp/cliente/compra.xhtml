@@ -1,0 +1,169 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="contenido">
+        <div class="container ">
+            <h1 class="text-black align-items-center">Completa tu compra </h1>
+
+            <p:panel header="Seleccionar sillas" styleClass="text-center" >
+                <h:form id="sillas">
+
+
+
+                    <div class="py-4 my-3">
+                        <div class="text-center mb-3"> <h5>Pantalla</h5></div>
+                        <p:repeat value="#{compraBean.matriz}" var="fila">
+                            <div class="fila-matriz" >
+                                <p:repeat value="#{fila}" var="entrada">
+                                    <div class=" d-inline-block" >
+                                        <h:form>
+                                            <p:selectBooleanButton styleClass="my-1" onLabel="#{entrada.fila}-#{entrada.columna}" offLabel="#{entrada.fila}-#{entrada.columna}"/>
+                                            <p:ajax event="click" listener="#{compraBean.guadarSilla(entrada.fila, entrada.columna)}" update="resumen-compra" />
+                                        </h:form>
+                                    </div>
+                                </p:repeat>
+                            </div>
+                        </p:repeat>
+                    </div>
+                </h:form>
+            </p:panel>
+
+            <p:panel styleClass="mt-4" >
+
+                <div class="my-3 ">
+                    <h2 class="texto-resaltado my-4 mb-5">Prueba nuestra confitería</h2>
+                    <p:carousel value="#{compraBean.confiteria}" var="comestible" numVisible="5" numScroll="2" containerStyleClass="confiteria" styleClass=" align-items-center">
+                        <div class="align-items-lg-end">
+                            <h:form class="comestible mx-2 flex-column" >
+                                <div>
+                                    <p:graphicImage styleClass="img-fluid rounded-2 mb-2 shadow-lg " url="#{comestible.imagen}" />
+                                </div>
+
+                                <div>
+                                    <h4 class="mb-1 mx-2">#{comestible.nombre}</h4>
+                                    <h6 class="mb-1 mx-2">#{comestible.descripcion}</h6>
+                                    <h:outputText value="#{comestible.precio}" styleClass="precio mx-2 mt-3">
+                                        <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText>
+                                </div>
+
+                                <div class="text-start mt-3">
+                                    <div class="d-inline-flex">
+                                        <p:commandButton icon="pi pi-minus" styleClass="rounded-button ui-button-outlined text-black" action="#{compraBean.quitarComestible(comestible)}" update="cantidad,resumen-compra" />
+                                        <p jsf:id="cantidad" class="ms-3 me-3 mt-2">#{compraBean.unidadesCompradas}</p>
+                                        <p:commandButton icon="pi pi-plus" styleClass="rounded-button ui-button-outlined text-black" action="#{compraBean.agregarComestible(comestible)}" update="cantidad, resumen-compra" />
+                                    </div>
+                                </div>
+                            </h:form>
+
+                        </div>
+                    </p:carousel>
+                </div>
+
+            </p:panel>
+
+            <p:panel header="Resumen de la compra" styleClass="mt-4 text-black "  >
+                <div jsf:id="resumen-compra" class="login-admin my-3">
+                    <div class="accordion" id="accordionPanelsStayOpenExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                    Entradas
+                                </button>
+                            </h2>
+                            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                                <div class="accordion-body">
+                                    <div class="container">
+                                        <p:dataTable id="entradas-resumen" var="entrada" value="#{compraBean.seleccionadas}" styleClass="w-75" stripedRows="true">
+                                            <p:column headerText="Ubicacion asiento">
+                                                <h:outputText value="Fila #{entrada.fila}, Silla #{entrada.columna}" />
+                                            </p:column>
+
+                                            <p:column headerText="Total">
+                                                <h:outputText value="$#{entrada.precio}" />
+                                            </p:column>
+                                        </p:dataTable>
+
+                                        <p class="texto mt-4"><strong>Total entradas:</strong> $#{compraBean.valorTotalEntradas}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item" >
+                            <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                                <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
+                                    Confiterías
+                                </button>
+                            </h2>
+                            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo">
+                                <div class="accordion-body">
+                                    <div class="container">
+                                        <p:dataTable id="confiteria-resumen" var="compraConfiteria" value="#{compraBean.comprasConfiteria}" styleClass="w-75" stripedRows="true">
+                                            <p:column headerText="Comestible">
+                                                <h:outputText value="#{compraConfiteria.confiteria.nombre}" />
+                                            </p:column>
+
+                                            <p:column headerText="Precio">
+                                                <h:outputText value="$#{compraConfiteria.precio}" />
+                                            </p:column>
+
+                                            <p:column headerText="Cantidad">
+                                                <h:outputText value="#{compraConfiteria.unidades}" />
+                                            </p:column>
+
+                                            <p:column headerText="Total">
+                                                <h:outputText value="$#{compraConfiteria.unidades * compraConfiteria.precio}" />
+                                            </p:column>
+                                        </p:dataTable>
+
+                                        <p class="texto mt-4"><strong>Total confiteria:</strong> $#{compraBean.valorTotalConfiteria}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h2 class=" my-4 mb-2">Valor total: $#{compraBean.valorTotal}</h2>
+
+                    </div>
+
+                </div>
+            </p:panel>
+
+            <p:panel header="Finalizar compra" styleClass="mt-4 text-black mb-4" >
+
+                <div jsf:id="completar-compra" >
+                        <h:form>
+
+                            <h:panelGrid columns="3" cellpadding="5" styleClass="mt-2">
+
+
+                                <p:outputLabel for="seleccion_metodo_pago" value="Método de pago:" />
+                                <p:selectOneMenu id="seleccion_metodo_pago" styleClass="mx-3 selector select-metodo-pago"
+                                                 value="#{compraBean.metodoPago}">
+                                    <f:selectItem itemLabel="..." noSelectionOption="true" itemValue="#{null}" />
+                                    <f:selectItems value="#{compraBean.metodosPago}" var="metodoPago" itemLabel="#{metodoPago.toString()}" itemValue="#{metodoPago}"/>
+                                    <p:ajax event="change" listener="#{compraBean.seleccionarMetodoPago}" update="completar-compra" />
+                                </p:selectOneMenu>
+                                <p:message for="seleccion_metodo_pago" />
+
+
+                                <p:commandButton value="Finalizar Compra"  action="#{compraBean.finalizarCompra}" />
+
+
+                            </h:panelGrid>
+
+                        </h:form>
+                </div>
+             </p:panel>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

@@ -18,6 +18,8 @@ public class ClienteServicioImpl implements ClienteServicio {
     private final FuncionRepositorio funcionRepositorio;
     private final PeliculaRepositorio peliculaRepositorio;
     private final CuponRepositorio cuponRepositorio;
+
+
     private final CuponClienteRepository cuponClienteRepositorio;
     private final CompraConfiteriaRepositorio compraConfiteriaRepositorio;
     private final EntradaRepositorio entradaRepo;
@@ -66,7 +68,7 @@ public class ClienteServicioImpl implements ClienteServicio {
     @Override
     public Cliente registrar(Cliente cliente) throws Exception {
 
-        boolean correoExistente = esRepetido(cliente.getCorreo());
+        boolean correoExistente = esRepetido(cliente.getEmail());
         boolean cedulaExistente = cedulaRepetida(cliente.getCedula());
 
         if(correoExistente){
@@ -75,13 +77,15 @@ public class ClienteServicioImpl implements ClienteServicio {
         if(cedulaExistente){
             throw new Exception("La cedula ya se ha registrado anteriormente");
         }
+
+        Cliente registrado = clienteRepo.save(cliente);
         enviarCuponRegistro(cliente);
         enviarConfirmacion(cliente);
+        return registrado;
 
-        return clienteRepo.save(cliente);
     }
     private Boolean esRepetido(String correo) {
-        return clienteRepo.findByCorreo(correo).orElse(null)!=null;
+        return clienteRepo.findByEmail(correo).orElse(null)!=null;
     }
 
     private Boolean cedulaRepetida(Integer cedula) {
@@ -94,21 +98,21 @@ public class ClienteServicioImpl implements ClienteServicio {
                 "Este es un mensaje de confirmación,no debes contestarlo";
 
 
-        emailServicio.enviarEmail("Creación de cuenta unicine", mensaje, cliente.getCorreo());
+       // emailServicio.enviarEmail("Creación de cuenta unicine", mensaje, cliente.getCorreo());
     }
 
     private void enviarCuponRegistro(Cliente cliente) {
         String mensaje = "Por haber completado tu registro, te obsequiaremos un cupón de bienvenida " +
                 "Este cupón otorga un 15% de descuento en todas tus compras ";
 
-        emailServicio.enviarEmail("Cupon de Bienvenida", mensaje, cliente.getCorreo());
+        // emailServicio.enviarEmail("Cupon de Bienvenida", mensaje, cliente.getCorreo());
     }
     @Override
     public Cliente actualizar(Cliente cliente) throws Exception{
         Optional<Cliente> clienteGuardado = clienteRepo.findById(cliente.getCedula());
 
         if (clienteGuardado.isEmpty()) throw new Exception("No se ha encontrado al cliente");
-        if(esRepetido(cliente.getCorreo()))throw new Exception("El correo ya se ha registrado antes");
+        if(esRepetido(cliente.getEmail()))throw new Exception("El correo ya se ha registrado antes");
         if(cedulaRepetida(cliente.getCedula()))throw new Exception("La cedula ya se ha registrado antes");
 
         return clienteRepo.save(cliente);
@@ -191,22 +195,7 @@ public class ClienteServicioImpl implements ClienteServicio {
     }
 
 
-    @Override
-    public Entrada escogerSillas(Integer codigoentrada, String fila, String columna) throws Exception {
 
-        Entrada entrada = entradaRepo.obtener(codigoentrada);
-
-        if (entrada == null) throw new Exception("No se ha creado la entrada");
-
-        if(entrada.getFila() != null && entrada.getColumna() != null){
-            throw new Exception("La entrada ya tiene su asiento asignado");
-        }
-        entrada.setFila(fila);
-        entrada.setColumna(columna);
-        entradaRepo.save(entrada);
-
-        return entrada;
-    }
 
 
 
@@ -240,7 +229,7 @@ public class ClienteServicioImpl implements ClienteServicio {
 
         Cliente cliente = clienteRepo.obtener(correoCliente);
         String mensaje = "Ha solicitado cambiar su contraseña"+ "su nueva contraseña temporal es: "+contrasena;
-        cliente.setContraseña(contrasena);
+        cliente.setContrasena(contrasena);
         clienteRepo.save(cliente);
         if(cliente == null){
             throw new Exception("Cliente no encontrado");
@@ -264,17 +253,21 @@ public class ClienteServicioImpl implements ClienteServicio {
 
     @Override
     public List<Pelicula> buscarPeliculaGenero(Genero generoPelicula) throws Exception {
+
+        List<Genero> generosBuscados = null;
+        generosBuscados.add(generoPelicula);
+
         if(generoPelicula.equals("")||generoPelicula==null){
             throw new Exception("Debe indicar el género");
         }
-        if(peliculaRepositorio.buscarPeliculaGenero(generoPelicula).isEmpty()){
+        if(peliculaRepositorio.buscarPeliculaGenero(generosBuscados).isEmpty()){
             throw new Exception("No existen películas con dicho género");
         }
-        return peliculaRepositorio.buscarPeliculaGenero(generoPelicula);
+        return peliculaRepositorio.buscarPeliculaGenero(generosBuscados);
     }
 
     @Override
-    public List<Pelicula> buscarPeliculaEstado(Boolean estadoPelicula) throws Exception {
+    public List<Pelicula> buscarPeliculaEstado(EstadoPelicula estadoPelicula) throws Exception {
         if(estadoPelicula.equals("")||estadoPelicula==null){
             throw new Exception("Debe indicar el estado");
         }
@@ -330,6 +323,80 @@ public class ClienteServicioImpl implements ClienteServicio {
 
         return compra;
     }
+
+    @Override
+    public List<Pelicula> listarPeliculasEstado(Integer codigoCiudad, EstadoPelicula estadoPelicula) throws Exception {
+        return funcionRepositorio.listarPeliculasEstado(codigoCiudad,estadoPelicula);
+    }
+
+    public Compra finalizarCompra(Compra compra) throws Exception {
+        if(compra == null) throw new Exception("No hay compra para registrar");
+
+        compra.setFechaCompra( LocalDateTime.now() );
+        compra.calcularValorTotal();
+
+        compraRepositorio.save(compra);
+        entradaRepo.saveAll( compra.getEntradas() );
+        compraConfiteriaRepositorio.saveAll(compra.getCompraConfiterias() );
+
+        if( primeraCompra(compra.getCliente()) ) enviarCuponPrimeraCompra(compra.getCliente());
+
+        enviarConfirmacionCompra(compra.getCliente(), compra);
+
+        return compra;
+    }
+
+    @Override
+    public Compra obtenerCompra(Integer idCompra) throws Exception {
+            Optional<Compra> guardado = compraRepositorio.findById(idCompra);
+
+            if(!guardado.isPresent()){
+                throw new Exception("La compra no existe");
+            }
+            return guardado.get();
+
+    }
+
+    private boolean primeraCompra(Cliente cliente) {
+        return clienteRepo.obtenerCompras(cliente.getCedula()).size() <= 1;
+    }
+
+    private void enviarCuponPrimeraCompra(Cliente cliente) {
+
+        String mensaje = "Felicidades por tu primera compra! Para que sigas disfrutando del mejor cine te hemos enviado un cupon de regalo " +
+                "con el que puedes obtener un 10% de descuento del valor total de cualquier compra! ";
+
+
+
+        emailServicio.enviarEmail("Cupon de Regalo - 10% Descuento", mensaje, cliente.getEmail());
+    }
+
+    private void enviarConfirmacionCompra(Cliente cliente, Compra compra) {
+        String mensaje = "¡Has realizado una compra!     " +
+                " | ID de la compra: " + compra.getCodigo() +
+                " | Cantidad de entradas: " + compra.getEntradas().size() +
+                " | Subtotal entradas: $" + compra.obtenerTotalEntradas() +
+                " | Pelicula: " + compra.getFuncion().getPelicula().getNombre() +
+                " | Sala: " + compra.getFuncion().getSala().getNombre() +
+                " | Teatro: " + compra.getFuncion().getSala().getTeatro().getNombre() + " " + compra.getFuncion().getSala().getTeatro().getCiudad().getNombre() +
+                " | Direccion: " + compra.getFuncion().getSala().getTeatro().getDireccion() +
+                " | Subtotal confiteria: $" + compra.obtenerTotalConfiteria() +
+                " | Fecha y hora de la funcion: " + compra.getFuncion().getHorario().getFecha().toString() + " " + compra.getFuncion().getHorario().getHora().toString() + "\n" +
+                " || VALOR TOTAL: $" + compra.getTotal() + " ||      " +
+                " ----------------------- " +
+                " Puedes verla en tu historial de compras: https://bit.ly/3s7ETPZ";
+
+        emailServicio.enviarEmail("Confirmacion Compra", mensaje, cliente.getEmail());
+    }
+    @Override
+    public List<Entrada> obtenerEntradasCompradas(Funcion funcion) throws Exception {
+        if(funcion == null) throw new Exception("No hay funcion de la cual obtener entradas compradas");
+        if( !funcionRepositorio.existsById(funcion.getCodigo()) )
+            throw new Exception("La funcion no existe en la base de datos");
+
+        return entradaRepo.obtenerEntradasCompradasFuncion(funcion.getCodigo());
+    }
+
 
 
 

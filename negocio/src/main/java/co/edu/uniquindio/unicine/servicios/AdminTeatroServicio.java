@@ -21,6 +21,8 @@ public interface AdminTeatroServicio {
 
     List<Teatro> listarTeatros();
 
+    List<Ciudad> listarCiudades();
+
     Pelicula obtenerPelicula(String nombrePelicula) throws Exception;
 
     Horario obtenerHorario(Integer idHorario) throws Exception;
@@ -57,5 +59,8 @@ public interface AdminTeatroServicio {
     DistribucionSillas obtenerDistribucion(Integer idDistribucion) throws Exception;
 
     List<DistribucionSillas> listarDistribucion();
+
+    List<Teatro> listarTeatrosCiudad(Integer codigoCiudad);
+
 
 }

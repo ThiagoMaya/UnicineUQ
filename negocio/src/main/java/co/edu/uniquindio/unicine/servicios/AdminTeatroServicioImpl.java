@@ -117,6 +117,11 @@ public class AdminTeatroServicioImpl implements AdminTeatroServicio{
     }
 
     @Override
+    public List<Ciudad> listarCiudades() {
+        return ciudadRepositorio.findAll();
+    }
+
+    @Override
     public Ciudad obtenerCiudad(Integer codigoCiudad) throws Exception {
 
         Optional<Ciudad> guardado = ciudadRepositorio.findById(codigoCiudad);
@@ -236,7 +241,7 @@ public class AdminTeatroServicioImpl implements AdminTeatroServicio{
         Optional<Funcion> guardado = funcionRepositorio.findById(idFuncion);
 
         if(!guardado.isPresent()){
-            throw new Exception("La sala no existe");
+            throw new Exception("La funcion no existe");
         }
         return guardado.get();
     }
@@ -281,6 +286,10 @@ public class AdminTeatroServicioImpl implements AdminTeatroServicio{
             throw new Exception("La distribucion no existe");
         }
         return guardado.get();
+    }
+
+    public List<Teatro> listarTeatrosCiudad(Integer codigoCiudad) {
+        return funcionRepositorio.listarTeatrosCiudad(codigoCiudad);
     }
 
     @Override

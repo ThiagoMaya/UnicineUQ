@@ -4,11 +4,14 @@ import co.edu.uniquindio.unicine.entidades.*;
 import co.edu.uniquindio.unicine.repositorios.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AdminServicioImpl implements AdminServicio{
+
+    private TeatroRepositorio teatroRepositorio;
 
      private final AdministradorRepositorio administradorRepositorio;
 
@@ -20,14 +23,17 @@ public class AdminServicioImpl implements AdminServicio{
 
     private final CiudadRepositorio ciudadRepositorio;
 
+    private final FuncionRepositorio funcionRepositorio;
+
     private final AdministradorTeatroRepositorio administradorTeatroRepositorio;
 
-    public AdminServicioImpl(AdministradorRepositorio administradorRepositorio, PeliculaRepositorio peliculaRepositorio, ConfiteriaRepositorio confiteriaRepositorio, CuponRepositorio cuponRepositorio, CiudadRepositorio ciudadRepositorio, AdministradorTeatroRepositorio administradorTeatroRepositorio) {
+    public AdminServicioImpl(AdministradorRepositorio administradorRepositorio, PeliculaRepositorio peliculaRepositorio, ConfiteriaRepositorio confiteriaRepositorio, CuponRepositorio cuponRepositorio, CiudadRepositorio ciudadRepositorio, FuncionRepositorio funcionRepositorio, AdministradorTeatroRepositorio administradorTeatroRepositorio) {
         this.administradorRepositorio = administradorRepositorio;
         this.peliculaRepositorio = peliculaRepositorio;
         this.confiteriaRepositorio = confiteriaRepositorio;
         this.cuponRepositorio = cuponRepositorio;
         this.ciudadRepositorio = ciudadRepositorio;
+        this.funcionRepositorio = funcionRepositorio;
         this.administradorTeatroRepositorio = administradorTeatroRepositorio;
     }
 
@@ -170,8 +176,8 @@ public class AdminServicioImpl implements AdminServicio{
     }
 
     @Override
-    public Pelicula obtenerPelicula(String nombrePelicula) throws Exception {
-        Optional<Pelicula> guardado = peliculaRepositorio.findByNombre(nombrePelicula);
+    public Pelicula obtenerPelicula(Integer idPelicula) throws Exception {
+        Optional<Pelicula> guardado = peliculaRepositorio.findById(idPelicula);
 
         if(!guardado.isPresent()){
             throw new Exception("La pelicula no existe");
@@ -226,6 +232,14 @@ public class AdminServicioImpl implements AdminServicio{
     }
 
     @Override
+    public List<Funcion> obtenerFuncionesPelicula(Integer peliculaCodigo) throws Exception {
+        if(peliculaCodigo == null || peliculaCodigo.equals(0)) throw new Exception("ID de pelicula vacio");
+
+        return funcionRepositorio.obtenerFuncionesPelicula(peliculaCodigo);
+    }
+
+
+    @Override
     public List<Confiteria> listarConfiteria() {
         return confiteriaRepositorio.findAll();
     }
@@ -272,8 +286,18 @@ public class AdminServicioImpl implements AdminServicio{
         return guardado.get();
     }
 
+
+
     @Override
     public List<Cupon> listarCupones() {
         return cuponRepositorio.findAll();
     }
+
+    /*
+    @Override
+    public List<Teatro> obtenerTeatroPeliculaCiudad(Integer codigoPelicula) {
+        return teatroRepositorio.obtenerTeatrosCiudad(codigoPelicula);
+    }
+
+     */
 }
